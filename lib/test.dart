@@ -1,37 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:mini_pc/screens/homeScreen/widgets/change_massage_dialog.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:web_socket_channel/web_socket_channel.dart';
 
-class MyHomePage extends StatefulWidget {
+import 'screens/homeScreen/widgets/change_massage_dialog.dart';
+
+class MyWebSocketPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyWebSocketPageState createState() => _MyWebSocketPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  late IO.Socket socket;
-
+class _MyWebSocketPageState extends State<MyWebSocketPage> {
+  late final WebSocketChannel channel;
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    connectToServer();
-  }
-
-  void connectToServer() {
-    socket = IO.io('ws://127.0.0.1:8000/ws/open_cell_employee/', <String, dynamic>{
-      'transports': ['websocket'],
-    });
-
-    socket.on('connect', (_) {
-      print('Connected to server');
-      socket.emit('message', 'Hello from Flutter');
-    });
-
-    socket.on('message', (data) {
-      print('Message from server: $data');
-      showChangeDialog(context,data);
+    String url =
+        'ws://51.20.73.175:8000/ws/open_cell_employee/';
+    final urlChanged = Uri.parse(url);
+    channel = WebSocketChannel.connect(urlChanged);
+    channel.stream.handleError((error) {
+      // Print the error if it occurs during the WebSocket stream
+      print('WebSocket stream error: $error');
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,19 +30,36 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('WebSocket Example'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('WebSocket Connection Established'),
-          ],
+        child: StreamBuilder(
+          stream: channel.stream,
+          builder: (context, snapshot) {
+             snapshot.hasData ?
+            showChangeDialog(context,snapshot.data)
+                :
+             Padding(
+              padding: const EdgeInsets.all(16.0),
+              child:Text('No data')
+            );
+             return Padding(
+                 padding: const EdgeInsets.all(16.0),
+            child:Text('No data')
+             );
+          },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          channel.sink.add('Hello, WebSocket!');
+        },
+        tooltip: 'Send Message',
+        child: Icon(Icons.send),
       ),
     );
   }
 
   @override
   void dispose() {
-    socket.disconnect();
+    channel.sink.close();
     super.dispose();
   }
 }
