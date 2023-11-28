@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showSuccessDialog(BuildContext context,dynamic data) {
+void showSuccessDialog(BuildContext context, dynamic data) {
   showDialog(
     context: context,
     builder: (BuildContext context) {

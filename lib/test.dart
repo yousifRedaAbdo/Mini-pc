@@ -18,8 +18,9 @@ class _MyWebSocketPageState extends State<MyWebSocketPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    String url =
-        'ws://51.20.73.175:8000/ws/open_cell_employee/';
+    // String url =
+    //     'ws://51.20.73.175:8000/ws/open_cell_employee/';
+    String url = 'ws://127.0.0.1:8000/ws/open_cell_employee/';
     final urlChanged = Uri.parse(url);
     channel = WebSocketChannel.connect(urlChanged);
     channel.stream.handleError((error) {
@@ -38,18 +39,27 @@ class _MyWebSocketPageState extends State<MyWebSocketPage> {
           stream: channel.stream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              Map<String, dynamic> jsonData = json.decode(
-                  snapshot.data as String);
-              String key = jsonData['key'];
+              Map<String, dynamic> jsonData = json.decode(snapshot.data);
+
+              String key = jsonData['data']['key'];
+
               if (key == 'success_open')
               {
-               showSuccessDialog(context,snapshot.data);
+                // showSuccessDialog(context, jsonData['data']);
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  showSuccessDialog(context, jsonData['data']);
+                });
               }else if(key == 'error_no_cell_assigned')
               {
-                showErrorDialog(context);
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  showErrorDialog(context);
+                });
+
              }else
              {
-                showChangeDialog(context, snapshot.data);
+               WidgetsBinding.instance!.addPostFrameCallback((_) {
+                 showChangeDialog(context, jsonData['data']);
+               });
              }
               }else{
              return Padding(
