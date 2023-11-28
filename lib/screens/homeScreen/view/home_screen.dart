@@ -50,7 +50,7 @@ class HomeScreens extends StatelessWidget {
                      Expanded(
                         child:  InkWell(
                           onTap: (){
-                            showSuccessDialog(context);
+                            showSuccessDialog(context,"");
                           },
                           child: Image(
                             image: const AssetImage(

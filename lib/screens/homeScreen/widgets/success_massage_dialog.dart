@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showSuccessDialog(BuildContext context) {
+void showSuccessDialog(BuildContext context,dynamic data) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -10,7 +10,7 @@ void showSuccessDialog(BuildContext context) {
           color: Colors.green,
           size: 55.0,
         ),
-        content: Text('The locker has been opened Cell ID: 55'),
+        content: Text('The locker has been opened Cell ID: ${data['cell_id']}'),
       );
     },
   );

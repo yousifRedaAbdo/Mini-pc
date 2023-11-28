@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mini_pc/screens/homeScreen/widgets/error_massege_dialog.dart';
+import 'package:mini_pc/screens/homeScreen/widgets/success_massage_dialog.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'screens/homeScreen/widgets/change_massage_dialog.dart';
@@ -33,17 +37,30 @@ class _MyWebSocketPageState extends State<MyWebSocketPage> {
         child: StreamBuilder(
           stream: channel.stream,
           builder: (context, snapshot) {
-             snapshot.hasData ?
-            showChangeDialog(context,snapshot.data)
-                :
-             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child:Text('No data')
-            );
+            if (snapshot.hasData) {
+              Map<String, dynamic> jsonData = json.decode(
+                  snapshot.data as String);
+              String key = jsonData['key'];
+              if (key == 'success_open')
+              {
+               showSuccessDialog(context,snapshot.data);
+              }else if(key == 'error_no_cell_assigned')
+              {
+                showErrorDialog(context);
+             }else
+             {
+                showChangeDialog(context, snapshot.data);
+             }
+              }else{
              return Padding(
-                 padding: const EdgeInsets.all(16.0),
-            child:Text('No data')
-             );
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text('No data')
+              );
+            }
+            return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text('No data')
+            );
           },
         ),
       ),
