@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,8 @@ import 'package:mini_pc/components/texts.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/change_massage_dialog.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/error_massege_dialog.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/success_massage_dialog.dart';
+import 'package:mini_pc/services/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 
@@ -30,8 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+
+  var controller = TextEditingController();
+  var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final dataProvider = Provider.of<DataProvider>(context);
+
     return Scaffold(
       body: Center(
         child: StreamBuilder(
@@ -44,16 +53,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
               if (key == 'success_open') {
                 // showSuccessDialog(context, jsonData['data']);
-                WidgetsBinding.instance!.addPostFrameCallback((_) {
-                  showSuccessDialog(context, jsonData['data']);
+                WidgetsBinding.instance!.addPostFrameCallback((_) async{
+                await  showSuccessDialog(context, jsonData['data']);
                 });
               } else if (key == 'error_no_cell_assigned') {
-                WidgetsBinding.instance!.addPostFrameCallback((_) {
-                  showErrorDialog(context);
+                WidgetsBinding.instance!.addPostFrameCallback((_) async{
+                await  showErrorDialog(context);
                 });
               } else {
-                WidgetsBinding.instance!.addPostFrameCallback((_) {
-                  showChangeDialog(context, jsonData['data']);
+                WidgetsBinding.instance!.addPostFrameCallback((_) async{
+                await  showChangeDialog(context, jsonData['data']);
                 });
               }
             } else {
@@ -62,10 +71,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: Image(
-                        image: const AssetImage(
-                          "assets/images/imbox.png",
-                        ),
+                      child: Stack(
+                        children: [
+                          Form(
+                            key: formKey,
+                            child: SizedBox(
+                              width: 200,
+                              child: TextFormField(
+                                controller: controller,
+                                autofocus: true,
+                                onChanged: (value)async{
+                                  await  dataProvider.openLocker(
+                                      card_id: controller.text,
+                                      context: context
+                                  );
+                                  controller.clear();
+                                },
+                              ),
+                            ),
+                          ),
+                          Image(
+                            image: const AssetImage(
+                              "assets/images/imbox.png",
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -117,10 +147,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Image(
-                      image: const AssetImage(
-                        "assets/images/imbox.png",
-                      ),
+                    child: Stack(
+                      children: [
+                        Form(
+                          key: formKey,
+                          child: SizedBox(
+                            width: 200,
+                            child: TextFormField(
+                              controller: controller,
+                              autofocus: true,
+                              onChanged: (value)async{
+                                await  dataProvider.openLocker(
+                                    card_id: controller.text,
+                                    context: context
+                                );
+                                controller.clear();
+                              },
+                            ),
+                          ),
+                        ),
+                        Image(
+                          image: const AssetImage(
+                            "assets/images/imbox.png",
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -139,14 +190,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                showErrorDialog(context);
-                              },
-                              child: Image(
-                                image: const AssetImage(
-                                  "assets/images/card.png",
-                                ),
+                            child: Image(
+                              image: const AssetImage(
+                                "assets/images/card.png",
                               ),
                             ),
                           ),

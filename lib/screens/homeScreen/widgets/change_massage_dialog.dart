@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-void showChangeDialog(BuildContext context,dynamic data) {
+ showChangeDialog(BuildContext context,dynamic data) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -14,10 +14,18 @@ void showChangeDialog(BuildContext context,dynamic data) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Sorry,The cell not belong to this locker'),
-              Text('Locker ID: ${data['locker_id']}'),
-              Text('Locker Location: ${data['location']}'),
-              Text('Cell ID: ${data['cell_id']}'),
+              Text('Sorry,The cell not belong to this locker',
+                  style: TextStyle(fontSize: 25)
+              ),
+              Text('Locker ID: ${data['locker_id']}',
+                  style: TextStyle(fontSize: 25)
+              ),
+              Text('Locker Location: ${data['location']}',
+                  style: TextStyle(fontSize: 25)
+              ),
+              Text('Cell ID: ${data['cell_id']}',
+                  style: TextStyle(fontSize: 25)
+              ),
             ],
           ),
         ),
@@ -26,7 +34,7 @@ void showChangeDialog(BuildContext context,dynamic data) {
   );
 
   // Set a timer to close the dialog after a certain period (e.g., 3 seconds)
-  Future.delayed(Duration(seconds: 3), () {
+  Future.delayed(Duration(seconds: 6), () {
     Navigator.of(context).pop(); // Close the dialog
   });
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showErrorDialog(BuildContext context) {
+ showErrorDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -10,12 +10,14 @@ void showErrorDialog(BuildContext context) {
           color: Colors.red,
           size: 55.0,
         ),
-        content: Text('Sorry, Don’t have a cell assigned to you'),
+        content: Text('Sorry, Don’t have a cell assigned to you',
+            style: TextStyle(fontSize: 25)
+        ),
       );
     },
   );
 
-  Future.delayed(Duration(seconds: 3), () {
+  Future.delayed(Duration(seconds: 6), () {
     Navigator.of(context).pop(); // Close the dialog
   });
 }

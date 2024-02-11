@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mini_pc/screens/homeScreen/view/home_screen.dart';
+import 'package:mini_pc/services/dio.dart';
+import 'package:mini_pc/services/provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
+  dioHelper.int();
   runApp(const MyApp());
 }
 
@@ -10,14 +14,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => DataProvider(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: HomeScreen(),
       ),
-      home: HomeScreen(),
     );
   }
 }

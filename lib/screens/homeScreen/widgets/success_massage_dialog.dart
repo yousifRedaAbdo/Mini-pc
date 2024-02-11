@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showSuccessDialog(BuildContext context, dynamic data) {
+ showSuccessDialog(BuildContext context, dynamic data) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -10,13 +10,16 @@ void showSuccessDialog(BuildContext context, dynamic data) {
           color: Colors.green,
           size: 55.0,
         ),
-        content: Text('The locker has been opened Cell ID: ${data['cell_id']}'),
+        content: Text(
+          'The locker has been opened Cell ID: ${data['cell_id']}',
+            style: TextStyle(fontSize: 25)
+        ),
       );
     },
   );
 
   // Set a timer to close the dialog after a certain period (e.g., 3 seconds)
-  Future.delayed(Duration(seconds: 3), () {
+  Future.delayed(Duration(seconds: 6), () {
     Navigator.of(context).pop(); // Close the dialog
   });
 }
