@@ -3,8 +3,16 @@ import 'package:mini_pc/services/dio.dart';
 
 class DataProvider extends ChangeNotifier {
 
+  bool isLoading = false;
+
+  void setLoading(bool value) {
+    isLoading = value;
+    notifyListeners();
+  }
+
   openLocker({
     required String card_id,
+    required TextEditingController controller,
     required context
   }) {
     dioHelper.postdata(
@@ -12,8 +20,11 @@ class DataProvider extends ChangeNotifier {
         data: {
           "card_id": "38882993004"
         }).then((value) {
+          setLoading(false);
+          controller.clear();
       notifyListeners();
     }).catchError((erorr) {
+      setLoading(false);
       print(erorr.toString());
     });
   }
