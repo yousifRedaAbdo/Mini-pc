@@ -1,6 +1,5 @@
-import 'dart:async';
-import 'dart:convert';
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mini_pc/components/texts.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/change_massage_dialog.dart';
@@ -34,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-
+  bool isHidden = true;
   var controller = TextEditingController();
   var formKey = GlobalKey<FormState>();
   @override
@@ -91,6 +90,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: 300,
                                 child: TextFormField(
                                   controller: controller,
+                                  obscureText: isHidden,
+                                  decoration: InputDecoration(
+                                    suffixIcon: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isHidden = !isHidden;
+                                        });
+                                      },
+                                      child: isHidden == true
+                                          ? const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                        child: Icon(
+                                          Icons.visibility_off,
+                                          color: Colors.black,
+                                          size: 22,
+                                        ),
+                                      )
+                                          : const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                        child: Icon(
+                                          Icons.visibility,
+                                          color: Colors.black,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    )
+                                  ),
+                                  onFieldSubmitted: (value){
+                                    if (formKey.currentState!.validate()) {
+                                      dataProvider.openLocker(
+                                          card_id: controller.text,
+                                          controller: controller,
+                                          context: context
+                                      );
+                                    }
+                                  },
                                   autofocus: true,
                                   validator: (String? value) {
                                     if (value!.isEmpty) {
@@ -100,36 +135,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10,),
-                            SizedBox(
-                              width: 100,
-                              child: dataProvider.isLoading == false? MaterialButton(
-                                color: Colors.blue,
-
-                                  onPressed: (){
-                               if (formKey.currentState!.validate()) {
-                                 dataProvider.setLoading(true);
-                                 dataProvider.openLocker(
-                                     card_id: controller.text,
-                                     controller: controller,
-                                     context: context
-                                 );
-                               }
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Open Cell",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500
-                                      ),
-                                    ),
-                                  ),
-                              )
-                              :
-                              Center(child: CircularProgressIndicator()),
-                            )
                           ],
                         )),
                     Expanded(
