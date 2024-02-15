@@ -20,6 +20,9 @@ import 'package:flutter/material.dart';
 
   // Set a timer to close the dialog after a certain period (e.g., 3 seconds)
   Future.delayed(Duration(seconds: 6), () {
-    Navigator.of(context).pop(); // Close the dialog
+    if (ModalRoute.of(context)!.isCurrent == false)
+    {
+      Navigator.of(context).pop();
+    } // Close the dialog
   });
 }

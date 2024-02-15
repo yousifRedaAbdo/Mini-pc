@@ -18,6 +18,9 @@ import 'package:flutter/material.dart';
   );
 
   Future.delayed(Duration(seconds: 6), () {
-    Navigator.of(context).pop(); // Close the dialog
+    if (ModalRoute.of(context)!.isCurrent == false)
+    {
+      Navigator.of(context).pop();
+    }// Close the dialog
   });
 }
