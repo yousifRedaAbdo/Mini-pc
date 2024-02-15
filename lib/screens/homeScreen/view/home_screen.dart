@@ -172,7 +172,112 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }
-            return Text("");
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image(
+                    image: const AssetImage(
+                      "assets/images/imbox.png",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                      flex: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          title("Welcome"),
+                          mediumText("Please Enter Your ID"),
+                          Form(
+                            key: formKey,
+                            child: SizedBox(
+                              width: 300,
+                              child: TextFormField(
+                                controller: controller,
+                                obscureText: isHidden,
+                                decoration: InputDecoration(
+                                    suffixIcon: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isHidden = !isHidden;
+                                        });
+                                      },
+                                      child: isHidden == true
+                                          ? const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                        child: Icon(
+                                          Icons.visibility_off,
+                                          color: Colors.black,
+                                          size: 22,
+                                        ),
+                                      )
+                                          : const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                        child: Icon(
+                                          Icons.visibility,
+                                          color: Colors.black,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    )
+                                ),
+                                onFieldSubmitted: (value){
+                                  if (formKey.currentState!.validate()) {
+                                    dataProvider.openLocker(
+                                        card_id: controller.text,
+                                        controller: controller,
+                                        context: context
+                                    );
+                                  }
+                                },
+                                autofocus: true,
+                                validator: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please Enter Your ID';
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Image(
+                              image: const AssetImage(
+                                "assets/images/card.png",
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Image(
+                              image: const AssetImage(
+                                "assets/images/phone.png",
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Image(
+                              image: const AssetImage(
+                                "assets/images/finger_print.jpg",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
           },
         ),
       ),
