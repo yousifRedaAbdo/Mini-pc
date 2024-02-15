@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mini_pc/components/texts.dart';
@@ -9,7 +8,6 @@ import 'package:mini_pc/services/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -17,6 +15,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final WebSocketChannel channel;
+  void reloadPage() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -31,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
       print('WebSocket stream error: $error');
     });
   }
-
 
   bool isHidden = true;
   var controller = TextEditingController();
@@ -53,162 +54,17 @@ class _HomeScreenState extends State<HomeScreen> {
               if (key == 'success_open') {
                 // showSuccessDialog(context, jsonData['data']);
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
-                  showSuccessDialog(context, jsonData['data']);
+                  showSuccessDialog(context, jsonData['data'], reloadPage);
                 });
               } else if (key == 'error_no_cell_assigned') {
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
-                  showErrorDialog(context);
+                  showErrorDialog(context, reloadPage);
                 });
               } else {
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
-                  showChangeDialog(context, jsonData['data']);
+                  showChangeDialog(context, jsonData['data'], reloadPage);
                 });
               }
-            } else {
-              return Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image(
-                      image: const AssetImage(
-                        "assets/images/imbox.png",
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                      flex: 2,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            title("Welcome"),
-                            mediumText("Please Enter Your ID"),
-                            Form(
-                              key: formKey,
-                              child: SizedBox(
-                                width: 300,
-                                child: TextFormField(
-                                  controller: controller,
-                                  obscureText: isHidden,
-                                  decoration: InputDecoration(
-                                    suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isHidden = !isHidden;
-                                        });
-                                      },
-                                      child: isHidden == true
-                                          ? const Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                                        child: Icon(
-                                          Icons.visibility_off,
-                                          color: Colors.black,
-                                          size: 22,
-                                        ),
-                                      )
-                                          : const Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                                        child: Icon(
-                                          Icons.visibility,
-                                          color: Colors.black,
-                                          size: 22,
-                                        ),
-                                      ),
-                                    ),
-                                    prefixIcon: InkWell(
-                                      onTap: (){
-                                        controller.clear();
-                                      },
-                                        child: Icon(Icons.clear)
-                                    )
-                                  ),
-                                  onFieldSubmitted: (value){
-                                    dataProvider.setLoading(true);
-                                    if (formKey.currentState!.validate()) {
-                                      dataProvider.openLocker(
-                                          card_id: controller.text,
-                                          controller: controller,
-                                          context: context
-                                      );
-                                    }
-                                  },
-                                  autofocus: true,
-                                  validator: (String? value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please Enter Your ID';
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 10,),
-                            SizedBox(
-                              width: 100,
-                              child: dataProvider.isLoading == false? MaterialButton(
-                                color: Colors.blue,
-
-                                onPressed: (){
-                                  if (formKey.currentState!.validate()) {
-                                    dataProvider.setLoading(true);
-                                    dataProvider.openLocker(
-                                        card_id: controller.text,
-                                        controller: controller,
-                                        context: context
-                                    );
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Open Cell",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  ),
-                                ),
-                              )
-                                  :
-                              Center(child: CircularProgressIndicator()),
-                            )
-                          ],
-                        )
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Image(
-                                image: const AssetImage(
-                                  "assets/images/card.png",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Image(
-                                image: const AssetImage(
-                                  "assets/images/phone.png",
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Image(
-                                image: const AssetImage(
-                                  "assets/images/finger_print.jpg",
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
             }
             return Center(
               child: Column(
@@ -245,37 +101,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       child: isHidden == true
                                           ? const Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                                        child: Icon(
-                                          Icons.visibility_off,
-                                          color: Colors.black,
-                                          size: 22,
-                                        ),
-                                      )
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.0),
+                                              child: Icon(
+                                                Icons.visibility_off,
+                                                color: Colors.black,
+                                                size: 22,
+                                              ),
+                                            )
                                           : const Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                                        child: Icon(
-                                          Icons.visibility,
-                                          color: Colors.black,
-                                          size: 22,
-                                        ),
-                                      ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.0),
+                                              child: Icon(
+                                                Icons.visibility,
+                                                color: Colors.black,
+                                                size: 22,
+                                              ),
+                                            ),
                                     ),
                                     prefixIcon: InkWell(
-                                        onTap: (){
+                                        onTap: () {
                                           controller.clear();
                                         },
-                                        child: Icon(Icons.clear)
-                                    )
-                                ),
-                                onFieldSubmitted: (value){
+                                        child: Icon(Icons.clear))),
+                                onFieldSubmitted: (value) {
                                   dataProvider.setLoading(true);
                                   if (formKey.currentState!.validate()) {
                                     dataProvider.openLocker(
                                         card_id: controller.text,
                                         controller: controller,
-                                        context: context
-                                    );
+                                        context: context);
                                   }
                                 },
                                 autofocus: true,
@@ -287,39 +142,37 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                           SizedBox(
                             width: 100,
-                            child: dataProvider.isLoading == false? MaterialButton(
-                              color: Colors.blue,
-
-                              onPressed: (){
-                                if (formKey.currentState!.validate()) {
-                                  dataProvider.setLoading(true);
-                                  dataProvider.openLocker(
-                                      card_id: controller.text,
-                                      controller: controller,
-                                      context: context
-                                  );
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Open Cell",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              ),
-                            )
-                                :
-                            Center(child: CircularProgressIndicator()),
+                            child: dataProvider.isLoading == false
+                                ? MaterialButton(
+                                    color: Colors.blue,
+                                    onPressed: () {
+                                      if (formKey.currentState!.validate()) {
+                                        dataProvider.setLoading(true);
+                                        dataProvider.openLocker(
+                                            card_id: controller.text,
+                                            controller: controller,
+                                            context: context);
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Open Cell",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  )
+                                : Center(child: CircularProgressIndicator()),
                           )
                         ],
-                      )
-                  ),
+                      )),
                   Expanded(
                     flex: 1,
                     child: Padding(

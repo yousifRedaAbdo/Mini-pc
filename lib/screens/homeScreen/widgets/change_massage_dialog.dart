@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
- showChangeDialog(BuildContext context,dynamic data) {
+
+import '../view/home_screen.dart';
+
+showChangeDialog(BuildContext context, dynamic data, reloadPage) {
   showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Icon(
@@ -15,27 +19,28 @@ import 'package:flutter/material.dart';
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Sorry,The cell not belong to this locker',
-                  style: TextStyle(fontSize: 25)
-              ),
+                  style: TextStyle(fontSize: 25)),
               Text('Locker ID: ${data['locker_id']}',
-                  style: TextStyle(fontSize: 25)
-              ),
+                  style: TextStyle(fontSize: 25)),
               Text('Locker Location: ${data['location']}',
-                  style: TextStyle(fontSize: 25)
-              ),
+                  style: TextStyle(fontSize: 25)),
               Text('Cell ID: ${data['cell_id']}',
-                  style: TextStyle(fontSize: 25)
-              ),
+                  style: TextStyle(fontSize: 25)),
             ],
           ),
         ),
       );
     },
   );
+
   Future.delayed(Duration(seconds: 6), () {
-    if (ModalRoute.of(context)!.isCurrent == false)
-    {
-      Navigator.of(context).pop();
-    }// Close the dialog
+    // if (ModalRoute.of(context)!.isCurrent == false)
+    // {
+    Navigator.of(context).pop();
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (route) => false);
+    // reloadPage();
+    // }// Close the dialog
   });
 }
