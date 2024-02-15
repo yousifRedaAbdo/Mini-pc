@@ -52,16 +52,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
               if (key == 'success_open') {
                 // showSuccessDialog(context, jsonData['data']);
-                WidgetsBinding.instance!.addPostFrameCallback((_) async{
-                await  showSuccessDialog(context, jsonData['data']);
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  showSuccessDialog(context, jsonData['data']);
                 });
               } else if (key == 'error_no_cell_assigned') {
-                WidgetsBinding.instance!.addPostFrameCallback((_) async{
-                await  showErrorDialog(context);
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  showErrorDialog(context);
                 });
               } else {
-                WidgetsBinding.instance!.addPostFrameCallback((_) async{
-                await  showChangeDialog(context, jsonData['data']);
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  showChangeDialog(context, jsonData['data']);
                 });
               }
             } else {
