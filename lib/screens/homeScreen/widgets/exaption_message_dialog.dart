@@ -9,8 +9,8 @@ showExaptionDialog(BuildContext context, dynamic data, reloadPage) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Icon(
-          Icons.lock_open_outlined,
-          color: Colors.green,
+          Icons.error,
+          color: Colors.red,
           size: 55.0,
         ),
         content: Text('${data['message']}',
