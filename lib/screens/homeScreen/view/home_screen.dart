@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mini_pc/components/texts.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/change_massage_dialog.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/error_massege_dialog.dart';
+import 'package:mini_pc/screens/homeScreen/widgets/exaption_message_dialog.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/success_massage_dialog.dart';
 import 'package:mini_pc/services/provider.dart';
 import 'package:provider/provider.dart';
@@ -60,7 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
                   showErrorDialog(context, reloadPage);
                 });
-              } else {
+              } else if (key == 'error_message') {
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  showExaptionDialog(context,jsonData['data'], reloadPage);
+                });
+              }
+              else {
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
                   showChangeDialog(context, jsonData['data'], reloadPage);
                 });
