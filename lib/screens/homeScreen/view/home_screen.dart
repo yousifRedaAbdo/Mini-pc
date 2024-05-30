@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mini_pc/components/keyboard_number.dart';
 import 'package:mini_pc/components/texts.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/change_massage_dialog.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/error_massege_dialog.dart';
@@ -43,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final dataProvider = Provider.of<DataProvider>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: StreamBuilder(
           stream: channel.stream,
@@ -72,146 +75,176 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               }
             }
-            return Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image(
-                    image: const AssetImage(
-                      "assets/images/imbox.png",
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Expanded(
-                      flex: 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          title("Welcome"),
-                          mediumText("Please Enter Your ID"),
-                          Form(
-                            key: formKey,
-                            child: SizedBox(
-                              width: 300,
-                              child: TextFormField(
-                                controller: controller,
-                                obscureText: isHidden,
-                                decoration: InputDecoration(
-                                    suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isHidden = !isHidden;
-                                        });
-                                      },
-                                      child: isHidden == true
-                                          ? const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 12.0),
-                                              child: Icon(
-                                                Icons.visibility_off,
-                                                color: Colors.black,
-                                                size: 22,
-                                              ),
-                                            )
-                                          : const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 12.0),
-                                              child: Icon(
-                                                Icons.visibility,
-                                                color: Colors.black,
-                                                size: 22,
-                                              ),
-                                            ),
-                                    ),
-                                    prefixIcon: InkWell(
-                                        onTap: () {
-                                          controller.clear();
-                                        },
-                                        child: Icon(Icons.clear))),
-                                onFieldSubmitted: (value) {
-                                  dataProvider.setLoading(true);
-                                  if (formKey.currentState!.validate()) {
-                                    dataProvider.openLocker(
-                                        card_id: controller.text,
-                                        controller: controller,
-                                        context: context);
-                                  }
-                                },
-                                autofocus: true,
-                                validator: (String? value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please Enter Your ID';
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            width: 100,
-                            child: dataProvider.isLoading == false
-                                ? MaterialButton(
-                                    color: Colors.blue,
-                                    onPressed: () {
-                                      if (formKey.currentState!.validate()) {
-                                        dataProvider.setLoading(true);
-                                        dataProvider.openLocker(
-                                            card_id: controller.text,
-                                            controller: controller,
-                                            context: context);
-                                      }
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "Open Cell",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                  )
-                                : Center(child: CircularProgressIndicator()),
-                          )
-                        ],
-                      )),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Image(
-                              image: const AssetImage(
-                                "assets/images/card.png",
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Image(
-                              image: const AssetImage(
-                                "assets/images/phone.png",
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Image(
-                              image: const AssetImage(
-                                "assets/images/finger_print.jpg",
-                              ),
-                            ),
-                          ),
-                        ],
+            return Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/images/circle.svg",
+                    )
+                  ],
+                ),
+                Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/images/logo.svg",
+                              height: 70,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
+                      Expanded(
+                        child: Form(
+                          key: formKey,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      mediumText("Please Enter Your ID",color: Color(0xffF28021)),
+                                      SizedBox(height: 10,),
+                                      SizedBox(
+                                        width: 300,
+                                        child: TextFormField(
+                                          controller: controller,
+                                          obscureText: isHidden,
+                                          decoration: InputDecoration(
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color:Color(0xff437EEB),
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(35)
+                                              ),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide(color:Color(0xff437EEB),
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(35)
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color:Color(0xff437EEB),
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(35)
+                                              ),
+                                              suffixIcon: GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    isHidden = !isHidden;
+                                                  });
+                                                },
+                                                child: isHidden == true
+                                                    ? const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 12.0),
+                                                  child: Icon(
+                                                    Icons.visibility_off,
+                                                    color: Color(0xffF28021),
+                                                    size: 22,
+                                                  ),
+                                                )
+                                                    : const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 12.0),
+                                                  child: Icon(
+                                                    Icons.visibility,
+                                                    color: Color(0xffF28021),
+                                                    size: 22,
+                                                  ),
+                                                ),
+                                              ),
+                                              prefixIcon: InkWell(
+                                                  onTap: () {
+                                                    controller.clear();
+                                                  },
+                                                  child: Icon(Icons.clear,color: Color(0xffF28021),))),
+                                          onFieldSubmitted: (value) {
+                                            dataProvider.setLoading(true);
+                                            if (formKey.currentState!.validate()) {
+                                              dataProvider.openLocker(
+                                                  card_id: controller.text,
+                                                  controller: controller,
+                                                  context: context);
+                                            }
+                                          },
+                                          autofocus: true,
+                                          validator: (String? value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please Enter Your ID';
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  mediumText("OR"),
+                                  mediumText("Scan Your QR-Code Below",color: Color(0xff437EEB)),
+                                  SvgPicture.asset(
+                                    "assets/images/arrow.svg",
+                                    // width: 250,
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                width: 300,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    NumericKeyboardScreen(
+                                      controller: controller,
+                                    ),
+                                    SizedBox(
+                                      width: 100,
+                                      child: dataProvider.isLoading == false
+                                          ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(35),
+                                            child: MaterialButton(
+                                              color: Colors.blue,
+                                              onPressed: () {
+                                                if (formKey.currentState!.validate()) {
+                                              dataProvider.setLoading(true);
+                                              dataProvider.openLocker(
+                                                  card_id: controller.text,
+                                                  controller: controller,
+                                                  context: context);
+                                            }
+                                            },
+                                              child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Open Cell",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                                                                        ),
+                                                                                      ),
+                                          )
+                                          : Center(child: CircularProgressIndicator()),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             );
           },
         ),

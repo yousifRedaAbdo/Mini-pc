@@ -41,20 +41,20 @@ Widget title(String text, {Color color = Colors.black87}) {
     text,
     style: TextStyle(
       color: color,
-      fontSize: 70,
+      fontSize: 30,
       fontWeight: FontWeight.w700,
       fontFamily: 'dinfont',
     ),
   );
 }
 
-Widget mediumText(String text) {
+Widget mediumText(String text,{Color color = Colors.black}) {
   return Text(
     maxLines: 1,
     overflow: TextOverflow.ellipsis,
     text,
     style: TextStyle(
-      color: Colors.black,
+      color: color,
       fontSize: 16,
       fontWeight: FontWeight.w600,
       fontFamily: 'dinfont',
