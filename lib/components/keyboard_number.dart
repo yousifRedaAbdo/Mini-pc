@@ -26,7 +26,7 @@ class _NumericKeyboardScreenState extends State<NumericKeyboardScreen> {
                 buildRow(['7', '8', '9']),
                 buildRow(['4', '5', '6']),
                 buildRow(['1', '2', '3']),
-                buildRow(['.', '0', '<']),
+                buildRow(['X', '0', '<']),
               ],
             ),
           ),
@@ -61,13 +61,21 @@ class _NumericKeyboardScreenState extends State<NumericKeyboardScreen> {
                               0, widget.controller.text.length - 1);
                         });
                       }
-                    } else {
+                    } else if(key == 'X')
+                    {
+                      setState(() {
+                        widget.controller.clear();
+                      });
+                    }
+                    else {
                       setState(() {
                         widget.controller.text += key;
                       });
                     }
                   },
-                  child: key == '<' ? Icon(Icons.backspace) : Text(key,style: TextStyle(fontSize: 24)),
+                  child: key == '<' ? Icon(Icons.backspace) :
+                  key == 'X' ? Text(key,style: TextStyle(fontSize: 24,color: Color(0xffF28021))):
+                  Text(key,style: TextStyle(fontSize: 24)),
                   // style: ElevatedButton.styleFrom(
                   //   backgroundColor: Colors.white,
                   //   textStyle: TextStyle(fontSize: 24,color: Color(0xff437EEB)),

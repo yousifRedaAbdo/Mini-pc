@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mini_pc/components/keyboard_number.dart';
 import 'package:mini_pc/components/texts.dart';
@@ -21,6 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void reloadPage() {
     setState(() {});
   }
+  void updatePin(String pin) {
+    setState(() {
+      controller.text = pin;
+    });
+  }
+
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -34,6 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
     channel.stream.handleError((error) {
       // Print the error if it occurs during the WebSocket stream
       print('WebSocket stream error: $error');
+    });
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        SystemChannels.textInput.invokeMethod('TextInput.hide');
+      }
     });
   }
 
@@ -96,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             SvgPicture.asset(
                               "assets/images/logo.svg",
-                              height: 70,
+                              height: 100,
                             )
                           ],
                         ),
@@ -113,13 +126,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      mediumText("Please Enter Your ID",color: Color(0xffF28021)),
+                                      mediumText("Please Enter Your ID To Open Cell",color: Color(0xffF28021)),
                                       SizedBox(height: 10,),
                                       SizedBox(
                                         width: 300,
                                         child: TextFormField(
                                           controller: controller,
                                           obscureText: isHidden,
+                                          focusNode: focusNode,
+                                          readOnly: false,
+                                          keyboardType: TextInputType.none,
+                                          autofocus: true,
                                           decoration: InputDecoration(
                                               enabledBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(color:Color(0xff437EEB),
@@ -176,7 +193,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   context: context);
                                             }
                                           },
-                                          autofocus: true,
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
                                               return 'Please Enter Your ID';
@@ -255,6 +271,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     channel.sink.close();
+    focusNode.dispose();
+    controller.dispose();
     super.dispose();
   }
 }

@@ -42,7 +42,7 @@ showSuccessDialog(BuildContext context, dynamic data, reloadPage) {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Center(
-                              child: title('The locker has been opened Cell ID: ${data['cell_id']}',color: Color(0xff437EEB)
+                              child: title('The locker has been opened Cell ID: ${data['cell_id'].toString()}',color: Color(0xff437EEB)
                               ),
                             ),
                             SizedBox(height: 40,),
