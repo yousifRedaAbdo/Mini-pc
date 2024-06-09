@@ -72,8 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
               if (key == 'success_open') {
                 // showSuccessDialog(context, jsonData['data']);
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
-                  // showSuccessDialog(context, jsonData['data'], reloadPage);
-                  Navigator.of(context).push(MaterialPageRoute(builder: ((context) => SuccessScreen(jsonData['data']))));
+                   showSuccessDialog(context, jsonData['data'], reloadPage);
+                  //Navigator.of(context).push(MaterialPageRoute(builder: ((context) => SuccessScreen(jsonData['data']))));
                 });
               } else if (key == 'error_no_cell_assigned') {
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
