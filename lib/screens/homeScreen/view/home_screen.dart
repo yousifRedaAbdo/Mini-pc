@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mini_pc/components/keyboard_number.dart';
 import 'package:mini_pc/components/texts.dart';
+import 'package:mini_pc/screens/homeScreen/success_screen.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/change_massage_dialog.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/error_massege_dialog.dart';
 import 'package:mini_pc/screens/homeScreen/widgets/exaption_message_dialog.dart';
@@ -71,7 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
               if (key == 'success_open') {
                 // showSuccessDialog(context, jsonData['data']);
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
-                  showSuccessDialog(context, jsonData['data'], reloadPage);
+                  // showSuccessDialog(context, jsonData['data'], reloadPage);
+                  Navigator.of(context).push(MaterialPageRoute(builder: ((context) => SuccessScreen(jsonData['data']))));
                 });
               } else if (key == 'error_no_cell_assigned') {
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
