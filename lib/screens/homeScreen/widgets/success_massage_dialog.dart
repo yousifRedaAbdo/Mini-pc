@@ -49,9 +49,14 @@ showSuccessDialog(BuildContext context, dynamic data, reloadPage) {
                        mainAxisAlignment: MainAxisAlignment.center,
                        children: [
                          Center(
-                           child: title('The locker has been opened Cell ID: ${data['cell_id'].toString()}',color: Color(0xff437EEB)
+                           child: title('Cell Id: ${data} Opened',color: Color(0xff437EEB)
                            ),
                          ),
+                         // SizedBox(height: 10,),
+                         // Center(
+                         //   child: title('Open',color: Color(0xff437EEB)
+                         //   ),
+                         // ),
                          SizedBox(height: 40,),
                          Center(
                            child: SvgPicture.asset(
