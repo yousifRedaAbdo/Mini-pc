@@ -136,9 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           controller: controller,
                                           obscureText: isHidden,
                                           focusNode: focusNode,
-                                          readOnly: false,
-                                          keyboardType: TextInputType.none,
-                                          autofocus: true,
+                                           readOnly: false,
+                                           keyboardType: TextInputType.none,
+                                           autofocus: true,
                                           decoration: InputDecoration(
                                               enabledBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(color:Color(0xff437EEB),
@@ -199,6 +199,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             if (value!.isEmpty) {
                                               return 'Please Enter Your ID';
                                             }
+                                          },
+                                          onTap: ()
+                                          {
+                                            SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                            setState(() {
+                                              // Additional logic if needed
+                                            });
                                           },
                                         ),
                                       ),
